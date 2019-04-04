@@ -1,0 +1,178 @@
+//二叉树的中序非递归遍历
+//算法一
+void InOrderWithoutRecursion1(BTNode* root)
+{
+    //空树
+    if (root == NULL)
+        return;
+    //树非空
+    BTNode* p = root;
+    stack<BTNode*> s;
+    while (!s.empty() || p)
+    {
+        //一直遍历到左子树最下边，边遍历边保存根节点到栈中
+        while (p)
+        {
+            s.push(p);
+            p = p->lchild;
+        }
+        //当p为空时，说明已经到达左子树最下边，这时需要出栈了
+        if (!s.empty())
+        {
+            p = s.top();
+            s.pop();
+            cout << setw(4) << p->data;
+            //进入右子树，开始新的一轮左子树遍历(这是递归的自我实现)
+            p = p->rchild;
+        }
+    }
+}
+
+//算法二
+void InOrderWithoutRecursion2(BTNode* root)
+{
+    //空树
+    if (root == NULL)
+        return;
+    //树非空
+    BTNode* p = root;
+    stack<BTNode*> s;
+    while (!s.empty() || p)
+    {
+        if (p)
+        {
+            s.push(p);
+            p = p->lchild;
+        }
+        else
+        {
+            p = s.top();
+            s.pop();
+            cout << setw(4) << p->data;
+            p = p->rchild;
+        }
+    }
+}
+
+//二叉树的先序遍历
+//算法一，和刚才一样，先一次性指导最左边
+void PreOrderWithoutRecursion1(BTNode* root)
+{
+    if (root == NULL)
+        return;
+    BTNode* p = root;
+    stack<BTNode*> s;
+    while (!s.empty() || p)
+    {
+        //边遍历边打印，并存入栈中，以后需要借助这些根节点(不要怀疑这种说法哦)进入右子树
+        while (p)
+        {
+            cout << setw(4) << p->data;
+            s.push(p);
+            p = p->lchild;
+        }
+        //当p为空时，说明根和左子树都遍历完了，该进入右子树了
+        if (!s.empty())
+        {
+            p = s.top();
+            s.pop();
+            p = p->rchild;
+        }
+    }
+    cout << endl;
+}
+//算法二
+void PreOrderWithoutRecursion2(BTNode* root)
+{
+    if (root == NULL)
+        return;
+    BTNode* p = root;
+    stack<BTNode*> s;
+    while (!s.empty() || p)
+    {
+        if (p)
+        {
+            cout << setw(4) << p->data;
+            s.push(p);
+            p = p->lchild;
+        }
+        else
+        {
+            p = s.top();
+            s.pop();
+            p = p->rchild;
+        }
+    }
+    cout << endl;
+}
+
+//后序遍历
+// 先序遍历，左子树访问完成，根出栈。中序遍历，左子树访问完成，访问根，跟出栈。也就是总之左边完了之后，根伊町会出栈。
+// 但是后序遍历的问题就是，左边访问完成后，根不能出栈，需要做一个判断。
+
+void binaryTree::postOrder(){
+	stack<Node*> s;
+	Node *p,*last=NULL;
+	p=Root;
+	while(p){
+		s.push(p);
+		p=p->left;
+	}
+	while(!s.empty()){
+		p=s.top();
+		if (p->right==NULL || last==p->right){
+			cout<<p->info;
+			s.pop();
+			last=p;
+		}
+		else{
+			p=p->right;
+			while(p){
+				s.push(p);
+				p=p->left;
+			}
+		}
+	}
+}
+
+//二叉树的广搜
+void binaryTree::BFS(){
+	queue<Node*> q;
+	Node* p;
+	q.push(Root);
+	while(!q.empty()){
+		p=q.front();
+		if (p->left!=NULL)
+			q.push(p->left);
+		if (p->right!=NULL)
+			q.push(p->right);
+		cout<<p->info<<endl;
+		q.pop();
+	}
+}
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
